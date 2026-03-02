@@ -1,52 +1,50 @@
-import java.util.LinkedList; // Needed for the Queue implementation.
-import java.util.Queue;      // Standard tool for First-In-First-Out data.
-import java.util.Stack;      // Continued use of Last-In-First-Out tool.
+import java.util.ArrayDeque; // Used for a high-performance double-ended queue.
+import java.util.Deque;      // The interface that allows us to work with both ends of the queue.
 
 /**
  * PalindromeCheckerApp
- * UC6: Queue + Stack Based Palindrome Check
- * * We are comparing two different behaviors here:
- * 1. Queue (FIFO): Gives us characters in their original order.
- * 2. Stack (LIFO): Gives us characters in reverse order.
- * If these two sequences match perfectly, the word is a palindrome.
- * @version 6.0
+ * UC7: Deque-Based Optimized Palindrome Checker
+ * * In this version, we use a Deque (Double-Ended Queue).
+ * This is a smart way to check for palindromes because we can pull
+ * characters from both the "front" and "back" at the same time to see if they match.
+ * @version 7.0
  */
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
         // --- UC1: Welcome Message ---
         System.out.println("Welcome to the Palindrome Checker Management System");
-        System.out.println("Version : 6.0");
+        System.out.println("Version : 7.0");
         System.out.println("-------------------------------------------------");
 
-        // --- UC6: Queue + Stack Logic ---
-        // Let's validate the word "civic".
-        String input = "civic";
+        // --- UC7: Deque Logic ---
+        // We'll test using the word "refer".
+        String input = "refer";
         System.out.println("Input: " + input);
 
-        // We set up both structures to hold our characters.
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
+        // We create our Deque to hold the characters of the word.
+        Deque<Character> deque = new ArrayDeque<>();
 
-        // We put every character into BOTH the queue and the stack.
+        // We add every character from our word into the deque.
         for (char c : input.toCharArray()) {
-            queue.add(c);  // Enqueue: enters at the back.
-            stack.push(c); // Push: enters at the top.
+            deque.addLast(c);
         }
 
-        // We start by assuming it's a palindrome.
+        // We assume it's a palindrome until we find a mismatch.
         boolean isPalindrome = true;
 
-        // We compare them by pulling one character from the front of the queue
-        // and one from the top of the stack at the same time.
-        while (!queue.isEmpty()) {
-            // dequeue() vs pop()
-            if (queue.remove() != stack.pop()) {
-                isPalindrome = false; // Mismatch means it's not symmetric.
+        // We keep comparing the first and last characters until we either
+        // run out of characters or only have one left in the middle.
+        while (deque.size() > 1) {
+            // We pull one from the front and one from the back.
+            // If they aren't the same, the word isn't a palindrome.
+            if (deque.removeFirst() != deque.removeLast()) {
+                isPalindrome = false;
                 break;
             }
         }
-        // Final report to the console.
+
+        // Output the final result to the user.
         System.out.println("Is Palindrome?: " + isPalindrome);
     }
 }
