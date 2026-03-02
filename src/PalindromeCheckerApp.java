@@ -1,48 +1,52 @@
-import java.util.Stack; // We need to bring in the Stack tool from Java's library.
+import java.util.LinkedList; // Needed for the Queue implementation.
+import java.util.Queue;      // Standard tool for First-In-First-Out data.
+import java.util.Stack;      // Continued use of Last-In-First-Out tool.
 
 /**
  * PalindromeCheckerApp
- * UC5: Stack-Based Palindrome Checker
- * * In this version, we use a Stack to reverse the word. Since a stack gives us
- * items back in reverse order (LIFO), it's a great way to verify a palindrome.
- * @version 5.0
+ * UC6: Queue + Stack Based Palindrome Check
+ * * We are comparing two different behaviors here:
+ * 1. Queue (FIFO): Gives us characters in their original order.
+ * 2. Stack (LIFO): Gives us characters in reverse order.
+ * If these two sequences match perfectly, the word is a palindrome.
+ * @version 6.0
  */
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
         // --- UC1: Welcome Message ---
         System.out.println("Welcome to the Palindrome Checker Management System");
-        System.out.println("Version : 5.0");
+        System.out.println("Version : 6.0");
         System.out.println("-------------------------------------------------");
 
-        // --- UC5: Stack Logic ---
-        // Let's test with the word "noon".
-        String input = "noon";
+        // --- UC6: Queue + Stack Logic ---
+        // Let's validate the word "civic".
+        String input = "civic";
         System.out.println("Input: " + input);
 
-        // We create a Stack specifically to hold characters.
+        // We set up both structures to hold our characters.
+        Queue<Character> queue = new LinkedList<>();
         Stack<Character> stack = new Stack<>();
 
-        // First, we "push" every character of our word onto the stack.
-        // As we do this, the characters pile up one on top of the other.
+        // We put every character into BOTH the queue and the stack.
         for (char c : input.toCharArray()) {
-            stack.push(c);
+            queue.add(c);  // Enqueue: enters at the back.
+            stack.push(c); // Push: enters at the top.
         }
 
-        // We assume it's a palindrome until proven otherwise.
+        // We start by assuming it's a palindrome.
         boolean isPalindrome = true;
 
-        // Now, we "pop" characters off the stack one by one.
-        // Because it's a stack, we get them back in reverse order.
-        for (char c : input.toCharArray()) {
-            // We compare the original character with the one we just pulled off the top.
-            if (c != stack.pop()) {
-                isPalindrome = false; // If they don't match, it's not a palindrome.
+        // We compare them by pulling one character from the front of the queue
+        // and one from the top of the stack at the same time.
+        while (!queue.isEmpty()) {
+            // dequeue() vs pop()
+            if (queue.remove() != stack.pop()) {
+                isPalindrome = false; // Mismatch means it's not symmetric.
                 break;
             }
         }
-
-        // Share the final result.
+        // Final report to the console.
         System.out.println("Is Palindrome?: " + isPalindrome);
     }
 }
