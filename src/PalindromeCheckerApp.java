@@ -1,34 +1,46 @@
 /**
  * PalindromeCheckerApp
- * UC3: Reverse String Based Palindrome Check
- * * Description:
- * This class checks whether a string is a palindrome by reversing
- * the string and comparing it with the original value[cite: 118].
+ * UC4: Character Array Based Palindrome Check
+ * * We are now making the app more efficient by looking at characters
+ * individually rather than creating whole new strings. [cite: 162]
  */
 public class PalindromeCheckerApp {
 
-    /**
-     * Application entry point for UC3.
-     */
     public static void main(String[] args) {
         // --- UC1: Welcome Message ---
-        System.out.println("Welcome to the Palindrome Checker Management System"); // [cite: 45]
-        System.out.println("Version : 3.0"); // [cite: 127]
+        // Let the user know the system is up and running. [cite: 10]
+        System.out.println("Welcome to the Palindrome Checker Management System");
+        System.out.println("Version : 4.0");
         System.out.println("-------------------------------------------------");
 
-        // --- UC3: String Reverse Logic ---
-        String input = "racecar"; // [cite: 100]
-        String reversed = ""; // [cite: 121]
+        // --- UC4: Using a Char Array & Two-Pointer Strategy ---
+        // This is the word we are testing this time. [cite: 174]
+        String input = "radar";
+        System.out.println("Input: " + input);
 
-        // Iterate from the last character to the first[cite: 120, 136].
-        // Length - 1 is the index of the last character.
-        for (int i = input.length() - 1; i >= 0; i--) {
-            reversed += input.charAt(i);
+        // We break the word down into a simple list of characters. [cite: 150, 175]
+        char[] chars = input.toCharArray();
+
+        // We set up two markers: one at the very start and one at the very end. [cite: 152, 177, 179]
+        int start = 0;
+        int end = chars.length - 1;
+
+        // We assume it's a palindrome until we find a reason to think otherwise. [cite: 181]
+        boolean isPalindrome = true;
+
+        // We walk toward the center from both sides, comparing characters as we go. [cite: 152, 182]
+        while (start < end) {
+            // If the characters at our markers don't match, it's not a palindrome. [cite: 161]
+            if (chars[start] != chars[end]) {
+                isPalindrome = false;
+                break; // No need to keep looking if we already found a mismatch.
+            }
+            // Move the markers closer to each other for the next check. [cite: 152]
+            start++;
+            end--;
         }
-        if (input.equals(reversed)) {
-            System.out.println("The string \"" + input + "\" is a palindrome.");
-        } else {
-            System.out.println("The string \"" + input + "\" is NOT a palindrome.");
-        }
+
+        // Finally, tell the user what we found. [cite: 161]
+        System.out.println("Is Palindrome?: " + isPalindrome);
     }
 }
