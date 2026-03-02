@@ -1,14 +1,29 @@
 public class PalindromeCheckerApp {
 
-    /**
-     * Application entry point.
-     * This is the first method executed by the JVM when the program starts[cite: 15, 39, 40].
-     * * @param args Command-Line arguments [cite: 41]
-     */
+
     public static void main(String[] args) {
-        // Console Output used to display messages [cite: 18]
-        System.out.println("Welcome to the Palindrome Checker Management System"); // [cite: 45]
-        System.out.println("Version : 1.0"); // [cite: 46]
-        System.out.println("System initialized successfully."); // [cite: 47]
+        // --- UC1: Welcome Message ---
+        System.out.println("Welcome to the Palindrome Checker Management System");
+        System.out.println("Version : 2.0");
+        System.out.println("System initialized successfully.");
+        System.out.println("-------------------------------------------------");
+
+        // --- UC2: Hardcoded Palindrome Logic ---
+        // Storing a predefined string literal [cite: 64, 75]
+        String input = "madam";
+        System.out.println("Input text: " + input); // [cite: 96]
+
+        boolean isPalindrome = true;
+
+        // Loop only till half of the string length [cite: 92, 93]
+        for (int i = 0; i < input.length() / 2; i++) {
+            // Compare characters from both ends [cite: 76]
+            if (input.charAt(i) != input.charAt(input.length() - 1 - i)) {
+                isPalindrome = false;
+                break;
+            }
+        }
+        // Conditional statement to display result [cite: 65, 78]
+        System.out.println("Is it a Palindrome?: " + isPalindrome); // [cite: 97]
     }
 }
