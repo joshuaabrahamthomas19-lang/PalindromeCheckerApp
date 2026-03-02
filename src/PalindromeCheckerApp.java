@@ -1,49 +1,45 @@
-import java.util.LinkedList; // We're using the LinkedList class to hold our characters.
-
 /**
  * PalindromeCheckerApp
- * UC8: Linked List Based Palindrome Checker
- * * This version uses a LinkedList to store characters. Since LinkedList in Java
- * supports double-ended operations, we can easily compare characters from
- * both the start and end of the list.
- * * @author Developer
- * @version 8.0
+ * UC9: Recursive Palindrome Checker
+ * * This version uses recursion to solve the problem.
+ * We check the outermost characters and then ask the same
+ * function to check the remaining inner part of the word.
+ * @version 9.0
  */
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
         // --- UC1: Welcome Message ---
         System.out.println("Welcome to the Palindrome Checker Management System");
-        System.out.println("Version : 8.0");
+        System.out.println("Version : 9.0");
         System.out.println("-------------------------------------------------");
 
-        // --- UC8: Linked List Logic ---
-        // Let's test the app with the word "level".
-        String input = "level";
+        // --- UC9: Recursive Logic ---
+        // Let's test with the word "madam".
+        String input = "madam";
         System.out.println("Input: " + input);
 
-        // We create a LinkedList to store each character of the word.
-        LinkedList<Character> list = new LinkedList<>();
+        // We start our recursive check from index 0 to the last index of the string.
+        boolean isPalindrome = check(input, 0, input.length() - 1);
 
-        // Add every character of the string into the linked list.
-        for (char c : input.toCharArray()) {
-            list.add(c);
-        }
-
-        // We assume it's a palindrome initially.
-        boolean isPalindrome = true;
-
-        // We continue comparing characters as long as there's more than one left.
-        // We remove one from the very front and one from the very end in each step.
-        while (list.size() > 1) {
-            // If the first and last characters don't match, it's not a palindrome.
-            if (!list.removeFirst().equals(list.removeLast())) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        // Output the result of our comparison.
+        // Tell the user if it's a palindrome based on the recursive result.
         System.out.println("Is Palindrome?: " + isPalindrome);
+    }
+
+    /**
+     * This is our recursive helper method.
+     * It compares characters at the start and end and then moves inward.
+     */
+    private static boolean check(String s, int start, int end) {
+        // --- BASE CASE ---
+        // If the pointers have met or crossed, we've successfully checked everything.
+        if (start >= end) {
+            return true;
+        }
+
+        // --- RECURSIVE STEP ---
+        // 1. Check if the current outer characters match.
+        // 2. If they match, call this same method again for the inner substring.
+        return (s.charAt(start) == s.charAt(end)) && check(s, start + 1, end - 1);
     }
 }
