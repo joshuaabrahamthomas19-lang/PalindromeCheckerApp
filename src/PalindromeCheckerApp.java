@@ -1,58 +1,70 @@
+import java.util.*;
+
 /**
  * PalindromeCheckerApp
- * UC11: Object-Oriented Palindrome Service
- * * We are now using OOPS! We've separated the "logic" from the "display".
- * The PalindromeService class is the 'expert' that knows how to check words,
- * and the PalindromeCheckerApp is the 'manager' that runs the program.
- * * @author Developer
- * @version 11.0
+ * UC12: Strategy Pattern for Palindrome Algorithms
+ * * This is the most advanced version! We define a "Strategy" (a plan).
+ * We can now switch between different algorithms (Stack or Deque)
+ * instantly. This makes our code incredibly flexible and easy to grow.
+ * @version 12.0
  */
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
         // --- UC1: Welcome Message ---
         System.out.println("Welcome to the Palindrome Checker Management System");
-        System.out.println("Version : 11.0");
+        System.out.println("Version : 12.0 (Advanced Strategy Pattern)");
         System.out.println("-------------------------------------------------");
 
-        // --- UC11: Using the Service Object ---
-        String input = "racecar";
+        String input = "level";
         System.out.println("Input: " + input);
 
-        // We create an "Instance" of our service class.
-        PalindromeService service = new PalindromeService();
+        // --- UC12: Strategy Pattern in Action ---
 
-        // We ask the service to check the word for us.
-        // We don't care HOW it checks it; we just care about the result.
-        boolean isPalindrome = service.checkPalindrome(input);
+        // 1. Let's use the Stack Strategy first
+        PalindromeStrategy strategy = new StackStrategy();
+        System.out.println("Testing with Stack Strategy: " + strategy.check(input));
 
-        // Display the result returned by the service.
-        System.out.println("Is Palindrome?: " + isPalindrome);
+        // 2. Now, we can swap to the Two-Pointer Strategy without changing the app logic
+        strategy = new TwoPointerStrategy();
+        System.out.println("Testing with Two-Pointer Strategy: " + strategy.check(input));
+    }
+}
+
+interface PalindromeStrategy {
+    boolean check(String input);
+}
+
+/**
+ * Strategy 1: Using a Stack (LIFO logic)
+ */
+class StackStrategy implements PalindromeStrategy {
+    @Override
+    public boolean check(String input) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) return false;
+        }
+        return true;
     }
 }
 
 /**
- * Service class that contains the actual business logic.
- * This is an example of Encapsulation and Single Responsibility.
+ * Strategy 2: Using Two Pointers (Efficient index-based logic)
  */
-class PalindromeService {
-
-    /**
-     * Checks whether the input string is a palindrome.
-     * This method is reusable and can be called from anywhere.
-     */
-    public boolean checkPalindrome(String input) {
-        // We'll use the efficient two-pointer logic here.
+class TwoPointerStrategy implements PalindromeStrategy {
+    @Override
+    public boolean check(String input) {
         int start = 0;
         int end = input.length() - 1;
-
         while (start < end) {
-            if (input.charAt(start) != input.charAt(end)) {
-                return false; // Not a palindrome.
-            }
+            if (input.charAt(start) != input.charAt(end)) return false;
             start++;
             end--;
         }
-        return true; // It is a palindrome.
+        return true;
     }
 }
