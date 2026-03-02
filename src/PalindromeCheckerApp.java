@@ -2,49 +2,68 @@ import java.util.*;
 
 /**
  * PalindromeCheckerApp
- * UC12: Strategy Pattern for Palindrome Algorithms
- * * This is the most advanced version! We define a "Strategy" (a plan).
- * We can now switch between different algorithms (Stack or Deque)
- * instantly. This makes our code incredibly flexible and easy to grow.
- * @version 12.0
+ * UC13: Performance Comparison
+ * * In this final version, we aren't just checking palindromes; we are
+ * benchmarking our code. We measure how many nanoseconds each algorithm
+ * takes so we can decide which approach is best for large data.
+ * @version 13.0
  */
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
         // --- UC1: Welcome Message ---
         System.out.println("Welcome to the Palindrome Checker Management System");
-        System.out.println("Version : 12.0 (Advanced Strategy Pattern)");
+        System.out.println("Version : 13.0 (Performance Benchmarking)");
         System.out.println("-------------------------------------------------");
 
         String input = "level";
         System.out.println("Input: " + input);
 
-        // --- UC12: Strategy Pattern in Action ---
+        // --- UC13: Measuring Execution Time ---
 
-        // 1. Let's use the Stack Strategy first
-        PalindromeStrategy strategy = new StackStrategy();
-        System.out.println("Testing with Stack Strategy: " + strategy.check(input));
+        // Let's test the Stack Strategy
+        PalindromeStrategy stackStrategy = new StackStrategy();
+        measurePerformance(stackStrategy, "Stack Strategy", input);
 
-        // 2. Now, we can swap to the Two-Pointer Strategy without changing the app logic
-        strategy = new TwoPointerStrategy();
-        System.out.println("Testing with Two-Pointer Strategy: " + strategy.check(input));
+        // Let's test the Two-Pointer Strategy
+        PalindromeStrategy pointerStrategy = new TwoPointerStrategy();
+        measurePerformance(pointerStrategy, "Two-Pointer Strategy", input);
+    }
+
+    /**
+     * This method acts as our stopwatch.
+     * It records the time, runs the check, and then calculates the difference.
+     */
+    public static void measurePerformance(PalindromeStrategy strategy, String name, String input) {
+        // Capture the start time in nanoseconds
+        long startTime = System.nanoTime();
+
+        // Run the actual algorithm
+        boolean result = strategy.check(input);
+
+        // Capture the end time
+        long endTime = System.nanoTime();
+
+        // Calculate the duration
+        long duration = endTime - startTime;
+
+        System.out.println("\n--- " + name + " ---");
+        System.out.println("Is Palindrome?: " + result);
+        System.out.println("Execution Time: " + duration + " ns");
     }
 }
+
+// --- Strategy Pattern Interface and Classes (from UC12) ---
 
 interface PalindromeStrategy {
     boolean check(String input);
 }
 
-/**
- * Strategy 1: Using a Stack (LIFO logic)
- */
 class StackStrategy implements PalindromeStrategy {
     @Override
     public boolean check(String input) {
         Stack<Character> stack = new Stack<>();
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
+        for (char c : input.toCharArray()) stack.push(c);
         for (char c : input.toCharArray()) {
             if (c != stack.pop()) return false;
         }
@@ -52,9 +71,6 @@ class StackStrategy implements PalindromeStrategy {
     }
 }
 
-/**
- * Strategy 2: Using Two Pointers (Efficient index-based logic)
- */
 class TwoPointerStrategy implements PalindromeStrategy {
     @Override
     public boolean check(String input) {
